@@ -29,6 +29,7 @@ input           data_in_last,
 input           data_en,
 
 output reg[31:0]data_out,
+output reg      data_out_last,
 output reg      data_out_en
 );
 
@@ -36,12 +37,13 @@ localparam TCQ = 1;
 
 //=======================================================================
 // rst gen
-
 reg     rst         = 1'b1;
+(* ASYNC_REG = "TRUE" *)
 reg     rst_dly1    = 1'b1;
+(* ASYNC_REG = "TRUE" *)
 reg     rst_dly2    = 1'b1;
 
-always @ (posedge clk or negedge reset)
+always @ (posedge clk or posedge reset)
 begin
     if (reset)
         rst_dly1    <= #TCQ 1'b1;
@@ -71,21 +73,20 @@ begin
         data_reg[47:0]  <= #TCQ data_reg[47:0];
 end
 
-reg             data_in_last_dly;
+reg             data_in_last_dly1;
+reg             data_in_last_dly2;
 
 always @ (posedge clk)
 begin
-    if (rst)
-        data_in_last_dly    <= #TCQ 1'b0;
-    else
-        data_in_last_dly    <= #TCQ data_in_last;
+    data_in_last_dly1   <= #TCQ data_in_last;
+    data_in_last_dly2   <= #TCQ data_in_last_dly1;
 end
 
 always @ (posedge clk)
 begin
     if (rst)
         gear_cnt    <= #TCQ 2'd0;
-    else if ({data_in_last,data_in_last_dly} == 2'b01)
+    else if ({data_in_last,data_in_last_dly1} == 2'b01)
         gear_cnt    <= #TCQ 2'd0;
     else if (data_en)
         gear_cnt    <= #TCQ gear_cnt + 1'b1;
@@ -97,7 +98,7 @@ always @ (posedge clk)
 begin
     if (rst)
         data_out_en_limit   <= #TCQ 1'b0;
-    else if ({data_in_last,data_in_last_dly} == 2'b01)
+    else if ({data_in_last,data_in_last_dly1} == 2'b01)
         data_out_en_limit   <= #TCQ 1'b0;
     else if (gear_cnt[0])
         data_out_en_limit   <= #TCQ 1'b1;
@@ -108,12 +109,18 @@ end
 always @ (posedge clk)
 begin
     if (rst)   
-            data_out   		<= #TCQ 32'd0;
+        data_out   		<= #TCQ 32'd0;
     else if (data_out_en_limit)
         begin
             case (gear_cnt)
                 2'd0:   data_out   		<= #TCQ data_reg[47:16];
-                2'd1:   data_out   		<= #TCQ data_out;
+                2'd1:   
+                    begin
+                        if ({data_in_last_dly1,data_in_last_dly2} == 2'b10)
+                            data_out    <= {8'd0,data_reg[47:24]};
+                        else
+                            data_out   		<= #TCQ data_out;
+                    end 
                 2'd2:   data_out   		<= #TCQ data_reg[31:0];
                 2'd3:   data_out   		<= #TCQ data_reg[39:8];
                 default:data_out   		<= #TCQ data_out;
@@ -127,26 +134,44 @@ reg[1:0] gear_cnt_dly;
 
 always @ (posedge clk)
 begin
-    gear_cnt_dly[1:0]   <= gear_cnt;
+    gear_cnt_dly[1:0]   <= #TCQ gear_cnt;
 end
 
 always @ (posedge clk)
 begin
     if (rst)
-        data_out_en <= 1'b0;
+        data_out_en <= #TCQ 1'b0;
     else if (data_out_en_limit)
         begin
-            if (gear_cnt == 2'd1)
-                data_out_en <= 1'b0;
+            if (data_in_last_dly1)
+                data_out_en <= #TCQ 1'b1;
+            else if (gear_cnt == 2'd1)
+                data_out_en <= #TCQ 1'b0;
             else if (gear_cnt_dly != gear_cnt)
-                data_out_en <= 1'b1;
+                data_out_en <= #TCQ 1'b1;
             else
-                data_out_en <= 1'b0;
+                data_out_en <= #TCQ 1'b0;
         end
     else
-        data_out_en <= 1'b0;
+        data_out_en <= #TCQ 1'b0;
 end 
 
 
+always @ (posedge clk)
+begin
+    if (rst)
+        data_out_last <= #TCQ 1'b0;
+    else if (data_out_en_limit)
+        begin
+            if (data_in_last_dly1 && gear_cnt == 2'd1)
+                data_out_last   <= #TCQ 1'b1;
+            else if ({data_in_last_dly1,data_in_last_dly2} == 2'b10)
+                data_out_last   <= #TCQ 1'b1;
+            else
+                data_out_last   <= #TCQ 1'b0;
+        end
+    else
+        data_out_last <= #TCQ 1'b0;
+end 
 
 endmodule

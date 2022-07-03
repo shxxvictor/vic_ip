@@ -33,13 +33,17 @@ wire        data_in_last ;
 wire        data_en      ;
 
 wire[31:0]  data_out_rgbr;
+wire        data_out_last;
 wire        data_out_en  ;
 
-always # 2.5 clk_200m = ~clk_200m;
+always 
+begin:clk_200m_gen
+    clk_200m = 0;
+    forever #2.5 clk_200m = ~clk_200m;
+end
 
 initial
 begin
-    clk_200m    = 1'b1;
     reset       = 1'b1;
     reset1      = 1'b1;
     # 1000;
@@ -51,7 +55,17 @@ begin
     reset       = 1'b0;
 end
 
-gearbox_data_gen u_gearbox_data_gen(
+//----------------------------
+// The input data type, Continuous or Intermittent
+`define     DATA_TYPE       32'd1
+//----------------------------
+// The input data end position, you can change this value to adjust where the data ends and observe how this gearbox react to the data_in_last signal.
+`define     DATA_END_SIG    32'd3
+
+gearbox_data_gen #(
+.DATA_TYPE          (`DATA_TYPE     ),
+.DATA_END_SIG       (`DATA_END_SIG  )
+)u_gearbox_data_gen(
 .reset              (reset1         ),               //input               
 .clk_200m           (clk_200m       ),               //input               
 
@@ -71,6 +85,7 @@ gearbox u_gearbox(
 .data_en      ( data_en      ),
 
 .data_out     ( data_out_rgbr),
+.data_out_last( data_out_last),
 .data_out_en  ( data_out_en  )
 );
 
