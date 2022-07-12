@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module gearbox_data_gen #(
+module gearbox_data_gen_24_32 #(
+parameter           DATA_MULTI      = 32'd0,
 parameter           DATA_TYPE       = 32'd0,
 parameter           DATA_END_SIG    = 32'd0
 )
@@ -33,48 +34,56 @@ output reg          data_in_last,
 output reg[24:0]    data_in_rgb
 );
 localparam TCQ = 1;
-reg[63:0]       data_end;
+reg[63:0]       DATA_START = 64'd1000;
+reg[63:0]       DATA_END;
 
 //----------------------------
 // According to the parameter the data end position changes
 always @ (posedge clk_200m)
 begin
     if (reset)
-        data_end    <= #TCQ 64'd10010;
+        DATA_END    <= #TCQ 64'd10010;
     else if (DATA_TYPE ==  32'd0)
         case (DATA_END_SIG[2:0])
-            3'd0:   data_end    <= #TCQ 64'd10009;
-            3'd1:   data_end  	<= #TCQ 64'd10010;
-            3'd2:   data_end  	<= #TCQ 64'd10011;
-            3'd3:   data_end  	<= #TCQ 64'd10012;
-            3'd4:   data_end    <= #TCQ 64'd10013;
-            3'd5:   data_end  	<= #TCQ 64'd10014;
-            3'd6:   data_end  	<= #TCQ 64'd10015;
-            3'd7:   data_end  	<= #TCQ 64'd10016;
-            default:data_end  	<= #TCQ data_end;
+            3'd0:   DATA_END    <= #TCQ 64'd10011;
+            3'd1:   DATA_END  	<= #TCQ 64'd10012;
+            3'd2:   DATA_END  	<= #TCQ 64'd10013;
+            3'd3:   DATA_END  	<= #TCQ 64'd10014;
+            3'd4:   DATA_END    <= #TCQ 64'd10015;
+            3'd5:   DATA_END  	<= #TCQ 64'd10016;
+            3'd6:   DATA_END  	<= #TCQ 64'd10017;
+            3'd7:   DATA_END  	<= #TCQ 64'd10018;
+            default:DATA_END  	<= #TCQ DATA_END;
         endcase
     else if (DATA_TYPE ==  32'd1)
         case (DATA_END_SIG[2:0])
-            3'd0:   data_end    <= #TCQ 64'd10008;
-            3'd1:   data_end  	<= #TCQ 64'd10011;
-            3'd2:   data_end  	<= #TCQ 64'd10012;
-            3'd3:   data_end  	<= #TCQ 64'd10015;
-            3'd4:   data_end    <= #TCQ 64'd10016;
-            3'd5:   data_end  	<= #TCQ 64'd10019;
-            3'd6:   data_end  	<= #TCQ 64'd10020;
-            3'd7:   data_end  	<= #TCQ 64'd10023;
-            default:data_end  	<= #TCQ data_end;
+            3'd0:   DATA_END    <= #TCQ 64'd10008;
+            3'd1:   DATA_END  	<= #TCQ 64'd10011;
+            3'd2:   DATA_END  	<= #TCQ 64'd10012;
+            3'd3:   DATA_END  	<= #TCQ 64'd10015;
+            3'd4:   DATA_END    <= #TCQ 64'd10016;
+            3'd5:   DATA_END  	<= #TCQ 64'd10019;
+            3'd6:   DATA_END  	<= #TCQ 64'd10020;
+            3'd7:   DATA_END  	<= #TCQ 64'd10023;
+            default:DATA_END  	<= #TCQ DATA_END;
         endcase
     else
-        data_end    <= #TCQ 64'd10010;
+        DATA_END    <= #TCQ 64'd10010;
 end
 
+//----------------------------
+// Main counter, generate logics
 reg[63:0]       main_cnt;
 
 always @ (posedge clk_200m)
 begin
     if (reset)
         main_cnt    <= #TCQ 64'd0;
+    else if (DATA_MULTI == 32'd1)
+        if (main_cnt == DATA_END)
+            main_cnt    <= #TCQ DATA_START - 2'd1;
+        else
+            main_cnt    <= #TCQ main_cnt + 1'b1;
     else
         main_cnt    <= #TCQ main_cnt + 1'b1;
 end
@@ -103,9 +112,9 @@ always @ (posedge clk_200m)
 begin
     if (reset)
         data_en <= #TCQ 1'b0;
-    else if (main_cnt >= (data_end + 1'b1) || !data_en_limit)
+    else if ((main_cnt <= DATA_START || main_cnt >= (DATA_END + 1'b1)) || !data_en_limit)
         data_en <= #TCQ 1'b0;
-    else if (main_cnt >= 64'd1000)
+    else if (main_cnt >= DATA_START)
         data_en <= #TCQ 1'b1;
     else
         data_en <= #TCQ data_en;
@@ -117,7 +126,7 @@ always @ (posedge clk_200m)
 begin
     if (reset)
         data_in_last <= #TCQ 1'b0;
-    else if (main_cnt == data_end)
+    else if (main_cnt == DATA_END)
         data_in_last <= #TCQ 1'b1;
     else
         data_in_last <= #TCQ 1'b0;
@@ -128,9 +137,11 @@ end
 always @ (posedge clk_200m)
 begin 
     if (reset)
-        data_in_rgb <= #TCQ 24'h30_20_10;
+        data_in_rgb <= #TCQ 24'ha2_a1_a0;
+    else if (data_in_rgb == 24'hd2_d1_d0)
+        data_in_rgb <= #TCQ 24'ha2_a1_a0;
     else if (data_en)
-        data_in_rgb <= #TCQ data_in_rgb + 24'h01_01_01;
+        data_in_rgb <= #TCQ data_in_rgb + 24'h10_10_10;
     else
         data_in_rgb <= #TCQ data_in_rgb;
 end

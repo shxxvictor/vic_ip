@@ -56,16 +56,20 @@ begin
 end
 
 //----------------------------
+// The input data multiply, instead a single pakage
+`define     DATA_MULTI      32'd1
+//----------------------------
 // The input data type, Continuous or Intermittent
-`define     DATA_TYPE       32'd1
+`define     DATA_TYPE       32'd0
 //----------------------------
 // The input data end position, you can change this value to adjust where the data ends and observe how this gearbox react to the data_in_last signal.
-`define     DATA_END_SIG    32'd3
+`define     DATA_END_SIG    32'd4
 
-gearbox_data_gen #(
+gearbox_data_gen_24_32 #(
+.DATA_MULTI         (`DATA_MULTI    ),
 .DATA_TYPE          (`DATA_TYPE     ),
 .DATA_END_SIG       (`DATA_END_SIG  )
-)u_gearbox_data_gen(
+)u_gearbox_data_gen_24_32(
 .reset              (reset1         ),               //input               
 .clk_200m           (clk_200m       ),               //input               
 
@@ -76,8 +80,8 @@ gearbox_data_gen #(
 
 
 
-gearbox u_gearbox(
-.reset        ( reset        ),
+gearbox_24_32 u_gearbox_24_32(
+.reset        ( reset1       ),
 .clk          ( clk_200m     ),
 
 .data_in      ( data_in_rgb  ),
