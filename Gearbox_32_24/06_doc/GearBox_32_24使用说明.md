@@ -12,49 +12,25 @@ GearBox变速箱，这里指的是RTL里非整数的位宽转换模块。本模�
 
 ## 输入连续时序图
 
-随着数据输入的信号有data_en和data_in_last。data_en代表当前clock数据有效，data_in_last为行结束信号，代表一行的数据传输结束，并且会重置内部计数器，内部计数器的作用为判断当前data_in为输入的哪一个相位。
+随着数据输入的信号有data_en和data_in_last。data_en代表当前clock数据有效，data_in_last为行结束信号，代表一行的数据传输结束，并且会重置内部计数器，内部计数器的作用为判断当前data_in为输入的哪一个相位。输入和输出延迟大约8-9个输入时钟，主要为时钟转换fifo的延迟，示意图没有画那么久。
 
-![002](GearBox_32_24使用说明.assets/002.PNG)
+![line_change](GearBox_32_24使用说明.assets/line_change.png)
 
-正常来讲，每3个输入就会有4个输出，当然data_in_last允许出现在数据比例异常的情况。也就是说最后一组数据只有1/2个输入，输出会有1/2个。具体的输入输出关系可以参考下面的时序图，由于本人仿真时候时钟比例小于3：4，所以输出数据里会看到使能拉低的时刻。
-
-下图为data_in_last出现在第0相位，（下两图和上图一样，由于延迟太久不太好放在一起截图，后面也会这样分开截图）：
-
-![000](GearBox_32_24使用说明.assets/000.PNG)
-
-![001](GearBox_32_24使用说明.assets/001.PNG)
+正常来讲，每3个输入就会有4个输出，当然data_in_last允许出现在数据比例异常的情况。也就是说最后一组数据只有1/2个输入，输出会有2/3个。具体的输入输出关系可以参考下面的时序图。示意图输入时钟与输出时钟恰好是3：4，所以输出没有断续，当输出时钟更快的时候会出现data_out_en断续的情况。
 
 下图为data_in_last出现在第1相位：
 
-![010](GearBox_32_24使用说明.assets/010.PNG)
-
-![011](GearBox_32_24使用说明.assets/011.PNG)
+![last_phase_1](GearBox_32_24使用说明.assets/last_phase_1.png)
 
 下图为data_in_last出现在第2相位：
 
-![020](GearBox_32_24使用说明.assets/020.PNG)
-
-![021](GearBox_32_24使用说明.assets/021.PNG)
+![last_phase_2](GearBox_32_24使用说明.assets/last_phase_2.png)
 
 ## 输入断续的时序图
 
 当然，更进一步的是本模块可以支持输入使能断续的转换。
 
-下图为输入断续下data_in_last出现在第0相位：
-
-![100](GearBox_32_24使用说明.assets/100.PNG)
-
-![101](GearBox_32_24使用说明.assets/101.PNG)
-
 下图为输入断续下data_in_last出现在第1相位：
 
-![110](GearBox_32_24使用说明.assets/110.PNG)
-
-![111](GearBox_32_24使用说明.assets/111.PNG)
-
-下图为输入断续下data_in_last出现在第2相位：
-
-![120](GearBox_32_24使用说明.assets/120.PNG)
-
-![121](GearBox_32_24使用说明.assets/121.PNG)
+![Intermittent_data](GearBox_32_24使用说明.assets/Intermittent_data.png)
 

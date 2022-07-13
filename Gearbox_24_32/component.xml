@@ -67,7 +67,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>4aab188d</spirit:value>
+            <spirit:value>36904c8c</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -238,11 +238,6 @@
         <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
         <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
       </spirit:file>
-      <spirit:file>
-        <spirit:name>00_prj/gearbox_sim_behav.wcfg</spirit:name>
-        <spirit:fileType>unknown</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-      </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
@@ -296,20 +291,21 @@
       <xilinx:displayName>gearbox_24_32_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
       <xilinx:coreRevision>2</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2022-07-12T06:30:47Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-07-13T07:26:40Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@1462643f_ARCHIVE_LOCATION">i:/vic_ip/Gearbox_24_32_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@498f4d6e_ARCHIVE_LOCATION">i:/vic_ip/Gearbox_24_32_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@8ee327_ARCHIVE_LOCATION">i:/vic_ip/Gearbox_24_32_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@733e169e_ARCHIVE_LOCATION">i:/vic_ip/Gearbox_24_32_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@1aca344_ARCHIVE_LOCATION">i:/vic_ip/Gearbox_24_32_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@26a1c092_ARCHIVE_LOCATION">i:/vic_ip/Gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7800a585_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@210d3cf9_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@a1ccecd_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@44efc07d_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@56190c6d_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ae46b14_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@72178b4b_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dc98b60a"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="aaabdc1b"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="bd4b682d"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="94bdc76c"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="a441c945"/>
     </xilinx:packagingInfo>
