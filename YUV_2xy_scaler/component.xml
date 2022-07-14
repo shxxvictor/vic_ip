@@ -64,7 +64,7 @@
             <spirit:name>TREADY</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>rreadsy</spirit:name>
+            <spirit:name>rready</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
@@ -112,7 +112,7 @@
             <spirit:name>TREADY</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>treadsy</spirit:name>
+            <spirit:name>tready</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
@@ -161,7 +161,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>59be420d</spirit:value>
+            <spirit:value>504a1575</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -180,7 +180,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>06e121da</spirit:value>
+            <spirit:value>bb935c7b</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -195,7 +195,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>58026a0d</spirit:value>
+            <spirit:value>4fb25720</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -272,7 +272,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>rreadsy</spirit:name>
+        <spirit:name>rready</spirit:name>
         <spirit:wire>
           <spirit:direction>out</spirit:direction>
           <spirit:wireTypeDefs>
@@ -341,7 +341,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>treadsy</spirit:name>
+        <spirit:name>tready</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
@@ -428,7 +428,7 @@
       <spirit:file>
         <spirit:name>01_rtl/YUV_2xy_scaler.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_06510345</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_f1c7f2bf</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -472,11 +472,23 @@
         <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
       </spirit:file>
       <spirit:file>
+        <spirit:name>03_sim/rgb2YCbCr.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>03_sim/sim_top.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
         <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
         <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>00_prj/sim_top_behav.wcfg</spirit:name>
+        <spirit:fileType>unknown</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -567,8 +579,8 @@
       <xilinx:xpmLibraries>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>6</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2022-06-27T04:53:53Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>7</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2022-07-05T06:22:22Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@46d92af_ARCHIVE_LOCATION">/media/disk_x/vic_projects/vic_ip/YUV_2xy_scaler</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7e23bcfe_ARCHIVE_LOCATION">/media/disk_x/vic_projects/vic_ip/YUV_2xy_scaler</xilinx:tag>
@@ -632,13 +644,26 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@48fd09d7_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@1e12abc_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@4b4f41ba_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@23aed264_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@51c7d50a_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@393343a2_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@67da2844_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@38cc90fb_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@73e26337_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@39eb53e0_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@49c08113_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@44342ec4_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2b4de596_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7cd72546_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@27460cc3_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5685dd4f_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="7cb6acda"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="d177feb1"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="990e9a01"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="eaa257ca"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="7926cabe"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="55175b09"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="4bf65053"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="8624c779"/>
     </xilinx:packagingInfo>

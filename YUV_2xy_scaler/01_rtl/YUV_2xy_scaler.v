@@ -38,7 +38,7 @@ input wire reset                                    ,
 // input axistream video data
 input wire[23:0] rdata                              ,
 input wire rlast                                    ,
-output reg rreadsy                                  ,
+output reg rready                                   ,
 input wire ruser                                    ,
 input wire rvalid                                   ,
 
@@ -46,29 +46,34 @@ input wire rvalid                                   ,
 // output axistream video data
 output reg[63:0] tdata                              ,
 output reg tlast                                    ,
-input wire treadsy                                  ,
+input wire tready                                   ,
 output reg tuser                                    ,
 output reg tvalid                                   
 
 );
 
+localparam TCQ = 1;
+
+//---------------------------------------
+// ready bypass
 always @ (posedge clk_in)
 begin
-    rreadsy <= treadsy;
+    rready <= #TCQ tready;
 end
 
+//---------------------------------------
+// data/last/user/valid signal delay
 reg[23:0]   rdata_pre   [2:0];
 reg         rlast_pre   [2:0];
 reg         ruser_pre   [2:0];   
 reg         rvalid_pre  [2:0];
 
-
 always @ (posedge clk_in)
 begin
-    rdata_pre[0]    <= rdata;
-    rlast_pre[0]    <= rlast;
-    ruser_pre[0]    <= ruser;
-    rvalid_pre[0]   <= rvalid;
+    rdata_pre[0]    <= #TCQ rdata;
+    rlast_pre[0]    <= #TCQ rlast;
+    ruser_pre[0]    <= #TCQ ruser;
+    rvalid_pre[0]   <= #TCQ rvalid;
 end
 
 genvar i;
@@ -77,13 +82,14 @@ for (i=1; i<=2; i=i+1)
     begin
         always @ (posedge clk_in)
             begin
-                rdata_pre[i]    <= rdata_pre[i-1];
-                rlast_pre[i]    <= rlast_pre[i-1];
-                ruser_pre[i]    <= ruser_pre[i-1];
-                rvalid_pre[i]   <= rvalid_pre[i-1];
+                rdata_pre[i]    <= #TCQ rdata_pre[i-1];
+                rlast_pre[i]    <= #TCQ rlast_pre[i-1];
+                ruser_pre[i]    <= #TCQ ruser_pre[i-1];
+                rvalid_pre[i]   <= #TCQ rvalid_pre[i-1];
             end
         end
 endgenerate
+
 //=============================================================
 // rst_in gen
 reg         rst_in         = 1'b1;
@@ -95,21 +101,20 @@ reg         rst_in_dly2    = 1'b1;
 always @ (posedge clk_in or posedge reset)
 begin
     if (reset)
-        rst_in_dly1    <= 1'b1;
+        rst_in_dly1    <= #TCQ 1'b1;
     else
-        rst_in_dly1    <= 1'b0;
+        rst_in_dly1    <= #TCQ 1'b0;
 end
 
 always @ (posedge clk_in)
 begin
-    rst_in_dly2    <= rst_in_dly1;
-    rst_in         <= rst_in_dly2 || ruser;
+    rst_in_dly2    <= #TCQ rst_in_dly1;
+    rst_in         <= #TCQ rst_in_dly2 || ruser;
 end
 
 
 //=============================================================
 // data input and pixel count (bram write logic)
-
 
 //=============================================================
 // formula 3*3 => 6*6
@@ -158,127 +163,128 @@ reg[15:0]       w_addr      = 16'd0;
 // line last and frame start signal delay
 always @ (posedge clk_in)
 begin
-    rlast_dly1  <= rlast_pre[2];
-    rlast_dly2  <= rlast_dly1;
-    h_subcnt4_dly   <= h_subcnt[4];
+    rlast_dly1      <= #TCQ rlast_pre[2];
+    rlast_dly2      <= #TCQ rlast_dly1;
+    h_subcnt4_dly   <= #TCQ h_subcnt[4];
 
-    ruser_dly1  <= ruser_pre[2];
-    ruser_dly2  <= ruser_dly1;
+    ruser_dly1      <= #TCQ ruser_pre[2];
+    ruser_dly2      <= #TCQ ruser_dly1;
 end
 
 // horizon count
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        h_cnt   <= 16'd0;
+        h_cnt   <= #TCQ 16'd0;
     else if ({h_subcnt4_dly,h_subcnt[4]} == 2'b01)
-        h_cnt   <= 16'd0;
+        h_cnt   <= #TCQ 16'd0;
     else if (rvalid_pre[2] || rvalid_dly1)
-        h_cnt   <= h_cnt + 1'b1;
+        h_cnt   <= #TCQ h_cnt + 1'b1;
     else
-        h_cnt   <= h_cnt;
+        h_cnt   <= #TCQ h_cnt;
 end
 
 // vertical count
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        v_cnt   <= 16'd0;
+        v_cnt   <= #TCQ 16'd0;
     else if ({ruser_dly2,ruser_dly1} == 2'b10)
-        v_cnt   <= 16'd0;
+        v_cnt   <= #TCQ 16'd0;
     else if ({h_subcnt4_dly,h_subcnt[4]} == 2'b01)
-        v_cnt   <= v_cnt + 1'b1;
+        v_cnt   <= #TCQ v_cnt + 1'b1;
     else
-        v_cnt   <= v_cnt;
+        v_cnt   <= #TCQ v_cnt;
 end
 
 // horizon subcount
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        h_subcnt_en <= 1'd0;
+        h_subcnt_en <= #TCQ 1'd0;
     else if (h_subcnt[5])
-        h_subcnt_en <= 1'b0;
+        h_subcnt_en <= #TCQ 1'b0;
     else if ({rlast_dly2,rlast_dly1} == 2'b01)
-        h_subcnt_en <= 1'b1;
+        h_subcnt_en <= #TCQ 1'b1;
     else
-        h_subcnt_en <= h_subcnt_en;
+        h_subcnt_en <= #TCQ h_subcnt_en;
 end
 
+// horizen sub counter, gennerate line end logics
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        h_subcnt   <= 6'd0;
+        h_subcnt   <= #TCQ 6'd0;
     else if (h_subcnt_en)
-        h_subcnt   <= h_subcnt + 1'b1;
+        h_subcnt   <= #TCQ h_subcnt + 1'b1;
     else
-        h_subcnt   <= 6'd0;
+        h_subcnt   <= #TCQ 6'd0;
 end
 
 // data valid delay 1
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        rvalid_dly1 <= 1'b0;
+        rvalid_dly1 <= #TCQ 1'b0;
     else if (w_addr == h_total - 2'd3)
-        rvalid_dly1 <= 1'b1;
+        rvalid_dly1 <= #TCQ 1'b1;
     else
-        rvalid_dly1 <= rvalid_pre[2];
+        rvalid_dly1 <= #TCQ rvalid_pre[2];
 end
 
 // data valid delay 2
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        rvalid_dly2 <= 1'b0;
+        rvalid_dly2 <= #TCQ 1'b0;
     else if (rvalid_dly1 && h_cnt != 16'd1)
-        rvalid_dly2 <= 1'b1;
+        rvalid_dly2 <= #TCQ 1'b1;
     else
-        rvalid_dly2 <= 1'b0;
+        rvalid_dly2 <= #TCQ 1'b0;
 end
 
 // data delay
 always @ (posedge clk_in)
 begin
-    rdata_dly1  <= rdata_pre[2];
-    rdata_dly2  <= rdata_dly1;
+    rdata_dly1  <= #TCQ rdata_pre[2];
+    rdata_dly2  <= #TCQ rdata_dly1;
 end
 
 // scaler Y creation
 always @ (posedge clk_in) 
 begin
     if(rst_in)
-        Y <= 8'd0;
+        Y <= #TCQ 8'd0;
     else
         if (rvalid_pre[2])
-            Y   <= (rdata_pre[2][7:0] >> 1) + (rdata_dly1[7:0] >> 1);
+            Y   <= #TCQ (rdata_pre[2][7:0] >> 1) + (rdata_dly1[7:0] >> 1);
         else
-            Y   <= Y;
+            Y   <= #TCQ Y;
 end
 
 // new data stream generate
 always @ (posedge clk_in) 
 begin
     if (rst_in)    
-        data_pre <= 32'd0;
+        data_pre <= #TCQ 32'd0;
     else
         if (rvalid_dly1)
-            data_pre <= {rdata_dly2[23:16],Y[7:0],rdata_dly2[15:0]};
+            data_pre <= #TCQ {rdata_dly2[23:16],Y[7:0],rdata_dly2[15:0]};
         else
-            data_pre <= 32'd0;
+            data_pre <= #TCQ 32'd0;
 end
 
 // write address
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        w_addr  <= 16'd0;
+        w_addr  <= #TCQ 16'd0;
     else if ({h_subcnt4_dly,h_subcnt[4]} == 2'b01)
-        w_addr   <= 16'd0;
+        w_addr  <= #TCQ 16'd0;
     else if (rvalid_dly2)
-        w_addr  <= w_addr + 1'b1;
+        w_addr  <= #TCQ w_addr + 1'b1;
     else
-        w_addr  <= w_addr;
+        w_addr  <= #TCQ w_addr;
 end
 
 // write enable
@@ -292,27 +298,27 @@ begin
         case (v_cnt%3)
             0: 
                 begin
-                    ena_sw[0] = 1'b1;
-                    ena_sw[1] = 1'b0;
-                    ena_sw[2] = 1'b0;
+                    ena_sw[0] = #TCQ 1'b1;
+                    ena_sw[1] = #TCQ 1'b0;
+                    ena_sw[2] = #TCQ 1'b0;
                 end
             1:
                 begin
-                    ena_sw[0] = 1'b0;
-                    ena_sw[1] = 1'b1;
-                    ena_sw[2] = 1'b0;
+                    ena_sw[0] = #TCQ 1'b0;
+                    ena_sw[1] = #TCQ 1'b1;
+                    ena_sw[2] = #TCQ 1'b0;
                 end
             2: 
                 begin
-                    ena_sw[0] = 1'b0;
-                    ena_sw[1] = 1'b0;
-                    ena_sw[2] = 1'b1;
+                    ena_sw[0] = #TCQ 1'b0;
+                    ena_sw[1] = #TCQ 1'b0;
+                    ena_sw[2] = #TCQ 1'b1;
                 end
             default: 
                 begin
-                    ena_sw[0] = 1'b0;
-                    ena_sw[1] = 1'b0;
-                    ena_sw[2] = 1'b0;
+                    ena_sw[0] = #TCQ 1'b0;
+                    ena_sw[1] = #TCQ 1'b0;
+                    ena_sw[2] = #TCQ 1'b0;
                 end
         endcase
 end
@@ -329,40 +335,39 @@ reg[15:0]   rd_cnt;
 // three bram switch
 reg[2:0]    bram_sw     = 3'd0;
 
-
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        bram_sw <= 3'd0;
+        bram_sw <= #TCQ 3'd0;
     else if ({h_subcnt4_dly,h_subcnt[4]} == 2'b01)
         case (v_cnt%3)
-            0: bram_sw[0]   <= 1'b1;
-            1: bram_sw[1]   <= 1'b1;
-            2: bram_sw[2]   <= 1'b1;
-            default: bram_sw    <= 3'd0;
+            0: bram_sw[0]   <= #TCQ 1'b1;
+            1: bram_sw[1]   <= #TCQ 1'b1;
+            2: bram_sw[2]   <= #TCQ 1'b1;
+            default: bram_sw    <= #TCQ 3'd0;
         endcase
     else if ({rd_last_dly2,rd_last_dly1} == 2'b10)
         case (rd_cnt%6)
-            1: bram_sw[0]   <= 1'b0;
-            3: bram_sw[1]   <= 1'b0;
-            5: bram_sw[2]   <= 1'b0;
-            default: bram_sw    <= bram_sw;
+            1: bram_sw[0]   <= #TCQ 1'b0;
+            3: bram_sw[1]   <= #TCQ 1'b0;
+            5: bram_sw[2]   <= #TCQ 1'b0;
+            default: bram_sw    <= #TCQ bram_sw;
         endcase
     else
-        bram_sw <= bram_sw;
+        bram_sw <= #TCQ bram_sw;
 end
 
 // read line count
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        rd_cnt  <= 16'd0;
+        rd_cnt  <= #TCQ 16'd0;
     else if (rd_cnt > (v_total << 1))
-        rd_cnt  <= 16'd0;
+        rd_cnt  <= #TCQ 16'd0;
     else if ({rd_last_dly2,rd_last_dly1} == 2'b10) 
-        rd_cnt  <= rd_cnt + 1'b1;
+        rd_cnt  <= #TCQ rd_cnt + 1'b1;
     else
-        rd_cnt  <= rd_cnt;
+        rd_cnt  <= #TCQ rd_cnt;
 end
 
 // read state machine
@@ -381,79 +386,79 @@ reg[2:0]    rd_state_dly    = 3'd0;
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        rd_state    <= RD_IDLE;
+        rd_state    <= #TCQ RD_IDLE;
     else
         case (rd_state)
             RD_IDLE :   
                 begin
                     if (rd_cnt == v_total << 1)         // frame end last line equal the previous line
                         case (v_total%3)
-                            0:  rd_state    <= RD_READ2s;
-                            1:  rd_state    <= RD_READ0s;
-                            2:  rd_state    <= RD_READ1s;
-                            default: rd_state   <= RD_IDLE;
+                            0:  rd_state    <= #TCQ RD_READ2s;
+                            1:  rd_state    <= #TCQ RD_READ0s;
+                            2:  rd_state    <= #TCQ RD_READ1s;
+                            default: rd_state   <= #TCQ RD_IDLE;
                         endcase
                     else if ({h_subcnt[5:4]} == 2'b10)
                         begin
                             case (bram_sw)
-                                3'b001: rd_state    <= RD_READ0c;
-                                3'b010: rd_state    <= RD_READ1c;
-                                3'b100: rd_state    <= RD_READ2c;
-                                default: rd_state   <= RD_IDLE;
+                                3'b001: rd_state    <= #TCQ RD_READ0c;
+                                3'b010: rd_state    <= #TCQ RD_READ1c;
+                                3'b100: rd_state    <= #TCQ RD_READ2c;
+                                default: rd_state   <= #TCQ RD_IDLE;
                             endcase
                         end
                     else
-                        rd_state    <= RD_IDLE;
+                        rd_state    <= #TCQ RD_IDLE;
                 end
             RD_READ0c:   
                 begin
                     if ({rd_last_dly2,rd_last_dly1} == 2'b10)
-                        rd_state    <= RD_READ0s;
+                        rd_state    <= #TCQ RD_READ0s;
                     else
-                        rd_state    <= RD_READ0c;
+                        rd_state    <= #TCQ RD_READ0c;
                 end
             RD_READ1c:
                 begin
                     if ({rd_last_dly2,rd_last_dly1} == 2'b10)
-                        rd_state    <= RD_READ1s;
+                        rd_state    <= #TCQ RD_READ1s;
                     else
-                        rd_state    <= RD_READ1c;
+                        rd_state    <= #TCQ RD_READ1c;
                 end   
             RD_READ2c:
                 begin
                     if ({rd_last_dly2,rd_last_dly1} == 2'b10)
-                        rd_state    <= RD_READ2s;
+                        rd_state    <= #TCQ RD_READ2s;
                     else
-                        rd_state    <= RD_READ2c;
+                        rd_state    <= #TCQ RD_READ2c;
                 end
             RD_READ0s:
                 begin
                     if ({rd_last_dly2,rd_last_dly1} == 2'b10)
-                        rd_state    <= RD_IDLE;
+                        rd_state    <= #TCQ RD_IDLE;
                     else
-                        rd_state    <= RD_READ0s; 
+                        rd_state    <= #TCQ RD_READ0s; 
                 end
             RD_READ1s:
                 begin
                     if ({rd_last_dly2,rd_last_dly1} == 2'b10)
-                        rd_state    <= RD_IDLE;
+                        rd_state    <= #TCQ RD_IDLE;
                     else
-                        rd_state    <= RD_READ1s; 
+                        rd_state    <= #TCQ RD_READ1s; 
                 end
             RD_READ2s:
                 begin
                     if ({rd_last_dly2,rd_last_dly1} == 2'b10)
-                        rd_state    <= RD_IDLE;
+                        rd_state    <= #TCQ RD_IDLE;
                     else
-                        rd_state    <= RD_READ2s;
+                        rd_state    <= #TCQ RD_READ2s;
                 end
-            default: rd_state   <= RD_IDLE;
+            default: rd_state   <= #TCQ RD_IDLE;
         endcase
 end
 
 always @ (posedge clk_in)
 begin
-    rd_state_dly    <= rd_state;
+    rd_state_dly    <= #TCQ rd_state;
 end
 
 // read address and enable
@@ -465,81 +470,81 @@ reg         enb2;
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        r_addr  <= 10'd0;
+        r_addr  <= #TCQ 10'd0;
     else if (rd_state == RD_IDLE)
-        r_addr  <= 10'd0;
+        r_addr  <= #TCQ 10'd0;
     else if (rd_state_dly != rd_state)
-        r_addr  <= 10'd0;
+        r_addr  <= #TCQ 10'd0;
     else if (enb0 || enb1 || enb2)
-        r_addr  <= r_addr + 1'b1;
+        r_addr  <= #TCQ r_addr + 1'b1;
     else
-        r_addr  <= r_addr;
+        r_addr  <= #TCQ r_addr;
 end
 
 always @ (posedge clk_in) 
 begin
     if (rst_in)
         begin
-            enb0    <= 1'b0;
-            enb1    <= 1'b0;
-            enb2    <= 1'b0;
+            enb0    <= #TCQ 1'b0;
+            enb1    <= #TCQ 1'b0;
+            enb2    <= #TCQ 1'b0;
         end
     else if (r_addr <= (h_total >> 1))
         case (rd_state)
             RD_IDLE:
                 begin
-                    enb0    <= 1'b0;
-                    enb1    <= 1'b0;
-                    enb2    <= 1'b0;
+                    enb0    <= #TCQ 1'b0;
+                    enb1    <= #TCQ 1'b0;
+                    enb2    <= #TCQ 1'b0;
                 end
             RD_READ0c:
                 begin
-                    enb0    <= 1'b1;
-                    enb1    <= 1'b0;
-                    enb2    <= 1'b1;
+                    enb0    <= #TCQ 1'b1;
+                    enb1    <= #TCQ 1'b0;
+                    enb2    <= #TCQ 1'b1;
                 end 
             RD_READ1c:
                 begin
-                    enb0    <= 1'b1;
-                    enb1    <= 1'b1;
-                    enb2    <= 1'b0;
+                    enb0    <= #TCQ 1'b1;
+                    enb1    <= #TCQ 1'b1;
+                    enb2    <= #TCQ 1'b0;
                 end
             RD_READ2c:
                 begin
-                    enb0    <= 1'b0;
-                    enb1    <= 1'b1;
-                    enb2    <= 1'b1;
+                    enb0    <= #TCQ 1'b0;
+                    enb1    <= #TCQ 1'b1;
+                    enb2    <= #TCQ 1'b1;
                 end
             RD_READ0s:
                 begin
-                    enb0    <= 1'b1;
-                    enb1    <= 1'b0;
-                    enb2    <= 1'b0;
+                    enb0    <= #TCQ 1'b1;
+                    enb1    <= #TCQ 1'b0;
+                    enb2    <= #TCQ 1'b0;
                 end
             RD_READ1s:
                 begin
-                    enb0    <= 1'b0;
-                    enb1    <= 1'b1;
-                    enb2    <= 1'b0;
+                    enb0    <= #TCQ 1'b0;
+                    enb1    <= #TCQ 1'b1;
+                    enb2    <= #TCQ 1'b0;
                 end
             RD_READ2s: 
                 begin
-                    enb0    <= 1'b0;
-                    enb1    <= 1'b0;
-                    enb2    <= 1'b1;
+                    enb0    <= #TCQ 1'b0;
+                    enb1    <= #TCQ 1'b0;
+                    enb2    <= #TCQ 1'b1;
                 end
             default: 
                 begin
-                    enb0    <= 1'b0;
-                    enb1    <= 1'b0;
-                    enb2    <= 1'b0;
+                    enb0    <= #TCQ 1'b0;
+                    enb1    <= #TCQ 1'b0;
+                    enb2    <= #TCQ 1'b0;
                 end
         endcase
     else
         begin
-            enb0    <= 1'b0;
-            enb1    <= 1'b0;
-            enb2    <= 1'b0;
+            enb0    <= #TCQ 1'b0;
+            enb1    <= #TCQ 1'b0;
+            enb2    <= #TCQ 1'b0;
         end
 end
 
@@ -599,40 +604,40 @@ bram_32w2048d_64w1024d u2 (
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        tdata_pre   <= 64'd0;
+        tdata_pre   <= #TCQ 64'd0;
     else
         case (rd_state)
             RD_IDLE:
                 begin
-                    tdata_pre   <= 64'd0;
+                    tdata_pre   <= #TCQ 64'd0;
                 end
             RD_READ0c:
                 begin
-                    tdata_pre   <= (doutb0 >> 1) + (doutb2 >>1);
+                    tdata_pre   <= #TCQ (doutb0 >> 1) + (doutb2 >>1);
                 end
             RD_READ0s:
                 begin
-                    tdata_pre   <= doutb0;
+                    tdata_pre   <= #TCQ doutb0;
                 end
             RD_READ1c:
                 begin
-                    tdata_pre   <= (doutb0 >> 1) + (doutb1 >>1);
+                    tdata_pre   <= #TCQ (doutb0 >> 1) + (doutb1 >>1);
                 end
             RD_READ1s:
                 begin
-                    tdata_pre   <= doutb1;
+                    tdata_pre   <= #TCQ doutb1;
                 end
             RD_READ2c:
                 begin
-                    tdata_pre   <= (doutb1 >> 1) + (doutb2 >>1);
+                    tdata_pre   <= #TCQ (doutb1 >> 1) + (doutb2 >>1);
                 end
             RD_READ2s: 
                 begin
-                    tdata_pre   <= doutb2;
+                    tdata_pre   <= #TCQ doutb2;
                 end
             default: 
                 begin
-                    tdata_pre   <= 64'd0;
+                    tdata_pre   <= #TCQ 64'd0;
                 end
         endcase
 end
@@ -641,66 +646,66 @@ end
 always @ (posedge clk_in) 
 begin
     if (rst_in)
-        rd_last   <= 1'b0;
+        rd_last   <= #TCQ 1'b0;
     else if (r_addr == (h_total >> 1))
-        rd_last   <= 1'b1;
+        rd_last   <= #TCQ 1'b1;
     else
-        rd_last   <= 1'b0;
+        rd_last   <= #TCQ 1'b0;
 end
 
 always @ (posedge clk_in)
 begin
-    rd_last_dly1    <= rd_last;
-    rd_last_dly2    <= rd_last_dly1; 
+    rd_last_dly1    <= #TCQ rd_last;
+    rd_last_dly2    <= #TCQ rd_last_dly1; 
 end
 
 // read data register output
 always @ (posedge clk_in) 
 begin
     if (rst_in)
-        tdata   <= 64'd0;
+        tdata   <= #TCQ 64'd0;
     else if (rd_cnt >= 16'd1 && rd_cnt <= (v_total << 1))
-        tdata   <= tdata_pre;
+        tdata   <= #TCQ tdata_pre;
     else
-        tdata   <= 64'd0;    
+        tdata   <= #TCQ 64'd0;    
 end
 
 // tuser generate
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        tuser   <= 1'b0;
+        tuser   <= #TCQ 1'b0;
     else if (rd_cnt == 16'd1 && r_addr == 16'd3)
-        tuser   <= 1'b1; 
+        tuser   <= #TCQ 1'b1; 
     else
-        tuser   <= 1'b0;
+        tuser   <= #TCQ 1'b0;
 end
 
 // tlast generate
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        tlast   <= 1'b0;
+        tlast   <= #TCQ 1'b0;
     else if (rd_cnt >= 1'b1)
-        tlast   <= rd_last_dly1;
+        tlast   <= #TCQ rd_last_dly1;
     else
-        tlast   <= 1'b0;
+        tlast   <= #TCQ 1'b0;
 end
 
 // tvalid generate
 always @ (posedge clk_in)
 begin
     if (rst_in)
-        tvalid_pre  <= 1'b0;
+        tvalid_pre  <= #TCQ 1'b0;
     else if (rd_cnt >= 16'd1 && r_addr >= 16'd2)
-        tvalid_pre  <= enb0 || enb1 || enb2;
+        tvalid_pre  <= #TCQ enb0 || enb1 || enb2;
     else
-        tvalid_pre  <= 1'b0;
+        tvalid_pre  <= #TCQ 1'b0;
 end
 
 always @ (posedge clk_in) 
 begin
-    tvalid  <= tvalid_pre;    
+    tvalid  <= #TCQ tvalid_pre;    
 end
 
 

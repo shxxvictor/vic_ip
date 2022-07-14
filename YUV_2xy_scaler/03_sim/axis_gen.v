@@ -28,11 +28,13 @@ input wire reset                                    ,
 
 //==================================================
 // output axistream video data
-output reg[24:0] tdata                              ,
+output reg[23:0] tdata                              ,
 output reg tlast                                    ,
-input wire treadsy                                  ,
+input wire tready                                  ,
 output reg tuser                                    ,
-output reg tvalid                          
+output reg tvalid                          ,
+
+output reg  done
 );
 
 //=============================================================
@@ -78,138 +80,126 @@ end
 
 //=============================================================
 // 
+localparam FILE_BIN_IN = "../../../../../03_sim/test.bin";
 
-
+integer         fd_in;
+integer         i;
 reg[15:0]       h_cnt		= 16'd0;
 reg[15:0]       v_cnt		= 16'd0;
 
+initial
+begin
+    done = 1'b0;
+    fd_in = $fopen(FILE_BIN_IN, "rb");
+    if(fd_in == 0)
+    begin
+        $display("$open file bin in failed") ;
+        $stop;
+    end
+    $display("\n ============= file bin in opened... ============= ") ;
+end
+  
 always @ (posedge clk_in)
 begin
-   if (rst_in)
-       h_cnt   <= 16'd0;
-   else if (h_cnt == 16'd2250)
-       h_cnt   <= 16'd0;
-   else
-       h_cnt   <= h_cnt + 1'b1;
+    if (rst_in)
+        done    <= 1'b0;
+    else if (v_cnt == 16'd1081)
+        done    <= 1'b1;
+    else
+        done    <= 1'b0;
+end
+
+reg     done_dly;
+
+always @ (posedge clk_in)
+begin
+    done_dly <= done;
 end
 
 always @ (posedge clk_in)
 begin
-   if (rst_in)
-       v_cnt   <= 16'd0;
-   else if (v_cnt == 16'd1125)
-       v_cnt   <= 16'd0;
-   else if (h_cnt == 16'd2250)
-       v_cnt   <= v_cnt + 1'b1;
-   else
-       v_cnt   <= v_cnt;
+    if ({done_dly,done} == 2'b10)
+        $fclose(fd_in);
+    else
+        ;
 end
 
 always @ (posedge clk_in)
 begin
-   if (rst_in)
-       tdata   <= 24'd0;
-   else if ((h_cnt > 0 && h_cnt <=2 || h_cnt>5 && h_cnt <= 16'd1923) && v_cnt >= 0 && v_cnt <= 1080 -1)
-       tdata   <= {v_cnt[6:0],h_cnt,1'd0};
-   else
-       tdata   <= tdata;
+    if (rst_in)
+        h_cnt   <= 16'd0;
+    else if (h_cnt == 16'd2250)
+        h_cnt   <= 16'd0;
+    else
+        h_cnt   <= h_cnt + 1'b1;
 end
 
 always @ (posedge clk_in)
 begin
-   if (rst_in)
-       tlast   <= 1'b0;
-   else if ((h_cnt == 16'd1923 && v_cnt >= 0 && v_cnt <= 1080 - 1))
-       tlast   <= 1'b1;
-   else
-       tlast   <= 1'b0;
+    if (rst_in)
+        v_cnt   <= 16'd0;
+    else if (v_cnt == 16'd1125)
+        v_cnt   <= 16'd0;
+    else if (h_cnt == 16'd2250)
+        v_cnt   <= v_cnt + 1'b1;
+    else
+        v_cnt   <= v_cnt;
 end
 
 always @ (posedge clk_in)
 begin
-   if (rst_in)
-       tuser   <= 1'b0;
-   else if (h_cnt == 16'd1 && v_cnt == 16'd0)
-       tuser   <= 1'b1;
-   else
-       tuser   <= 1'b0;
+    if (rst_in)
+        tdata   <= 24'd0;
+    //else if ((h_cnt > 0 && h_cnt <=2 || h_cnt>5 && h_cnt <= 16'd1923) && v_cnt >= 0 && v_cnt <= 1080 -1)
+    else if ((h_cnt>0 && h_cnt <= 16'd1920) && v_cnt >= 0 && v_cnt <= 1080 -1)
+        begin
+             tdata[23:16]   <= $fgetc(fd_in);
+             tdata[15:8]   <= $fgetc(fd_in);
+             tdata[7:0]   <= $fgetc(fd_in);
+//            tdata   <= rgb_data[h_cnt-1];
+        end
+    else
+        tdata   <= tdata;
 end
 
 always @ (posedge clk_in)
 begin
-   if (rst_in)
-       tvalid  <= 1'b0;
-   else if ((h_cnt > 0 && h_cnt <=2 || h_cnt>5 && h_cnt <= 16'd1923) && v_cnt >= 0 && v_cnt <= 1080 - 1)
-       tvalid  <= 1'b1;
-   else
-       tvalid  <= 1'b0;
+    if  (h_cnt == 16'd1920 && v_cnt == 1080 -1)
+        $fclose(fd_in);
+    else
+        ;
 end
 
-// always @ (posedge clk_in)
-// begin
-//     if (rst_in)
-//         h_cnt   <= 16'd0;
-//     else if (h_cnt == 16'd2250)
-//         h_cnt   <= 16'd0;
-//     else
-//         h_cnt   <= h_cnt + 1'b1;
-// end
+always @ (posedge clk_in)
+begin
+    if (rst_in)
+        tlast   <= 1'b0;
+    else if ((h_cnt == 16'd1920 && v_cnt >= 0 && v_cnt <= 1080 - 1))
+        tlast   <= 1'b1;
+    else
+        tlast   <= 1'b0;
+end
 
-// always @ (posedge clk_in)
-// begin
-//     if (rst_in)
-//         v_cnt   <= 16'd0;
-//     else if (v_cnt == 16'd1125)
-//         v_cnt   <= 16'd0;
-//     else if (h_cnt == 16'd2250)
-//         v_cnt   <= v_cnt + 1'b1;
-//     else
-//         v_cnt   <= v_cnt;
-// end
+always @ (posedge clk_in)
+begin
+    if (rst_in)
+        tuser   <= 1'b0;
+    else if (h_cnt == 16'd1 && v_cnt == 16'd0)
+        tuser   <= 1'b1;
+    else
+        tuser   <= 1'b0;
+end
 
-// always @ (posedge clk_in)
-// begin
-//     if (rst_in)
-//         tdata   <= 24'd0;
-//     else if (h_cnt%240 == 0)
-//         tdata   <= tdata;
-//     else if ((h_cnt > 0 && h_cnt <= (16'd1920 + 8)) && v_cnt >= 0 && v_cnt <= 1080 -1)
-//         tdata   <= {v_cnt[6:0],h_cnt,1'd0};
-//     else
-//         tdata   <= tdata;
-// end
+always @ (posedge clk_in)
+begin
+    if (rst_in)
+        tvalid  <= 1'b0;
+    else if ((h_cnt > 0 && h_cnt <= 16'd1920) && v_cnt >= 0 && v_cnt <= 1080 - 1)
+        tvalid  <= 1'b1;
+    else
+        tvalid  <= 1'b0;
+end
 
-// always @ (posedge clk_in)
-// begin
-//     if (rst_in)
-//         tlast   <= 1'b0;
-//     else if ((h_cnt == (16'd1920 + 8) && v_cnt >= 0 && v_cnt <= 1080 - 1))
-//         tlast   <= 1'b1;
-//     else
-//         tlast   <= 1'b0;
-// end
-
-// always @ (posedge clk_in)
-// begin
-//     if (rst_in)
-//         tuser   <= 1'b0;
-//     else if (h_cnt == 16'd1 && v_cnt == 16'd0)
-//         tuser   <= 1'b1;
-//     else
-//         tuser   <= 1'b0;
-// end
-
-// always @ (posedge clk_in)
-// begin
-//     if (rst_in)
-//         tvalid  <= 1'b0;
-//     else if (h_cnt%240 == 0)
-//         tvalid  <= 1'b0;
-//     else if ((h_cnt > 0 && h_cnt <= (16'd1920) + 8) && v_cnt >= 0 && v_cnt <= 1080 - 1)
-//         tvalid  <= 1'b1;
-//     else
-//         tvalid  <= 1'b0;
-// end
 
 
 

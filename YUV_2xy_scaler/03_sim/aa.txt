@@ -1,0 +1,17 @@
+ffplay -pixel_format yuyv422 -video_size 3840x2160 test_out_a.yuv 
+
+
+
+# 将原始图片 fish.bmp rgb24.    作为Github的C工程的输入
+echo "y" | ffmpeg -i fish.bmp -pix_fmt rgb24 fish_ffmpeg.rgb
+ffplay  -pix_fmt rgb24 -video_size 1920x1080 -i fish_ffmpeg.rgb
+
+
+# 将原始图片 fish.bmp 转换成yuyv422格式，并显示.    作为Matlab的输入
+# echo "y" | ffmpeg -i fish.bmp -pix_fmt yuyv422 fish_ffmpeg.yuv
+# ffplay  -pix_fmt yuyv422 -video_size 1920x1080 -i fish_ffmpeg.yuv
+
+
+# 将原始图片 fish.bmp 转换成jpeg格式，并显示        作为Matlab的对照
+# echo "y" | ffmpeg -i fish.bmp fish_ffmpeg.jpg
+# ffplay  -i fish_ffmpeg.jpg
