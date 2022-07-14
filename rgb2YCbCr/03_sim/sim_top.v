@@ -39,7 +39,6 @@ always begin
 end
 
 
-
 wire[23:0]      tdata           ;
 wire            tlast           ;
 wire            treadsy         ;
@@ -74,6 +73,7 @@ reg         tready_1       = 1'b1;
 wire        tuser_1         ;
 wire        tvalid_1        ;
 
+// vivado sim file path
 localparam FILE_BIN_OUT = "../../../../../03_sim/test_out.bin";
 
 integer     fd_out;
@@ -105,21 +105,6 @@ begin
         vic_delay   <= vic_delay + 1'b1;
 end
 
-//always @ (posedge clk_in)
-//begin
-//    if (vic_delay == 16'd6000)
-//        begin
-//            fd_out = $fopen(FILE_BIN_OUT, "wb");
-//            if(fd_out == 0)
-//            begin
-//                $display("$open file bin out failed") ;
-//                $stop;
-//            end
-//            $display("\n ============= file bin out opened... ============= ") ;
-//        end
-//    else
-//        ;
-//end
 
 
 always @ (posedge clk_in)
@@ -167,7 +152,6 @@ begin
     else
         ;
 end
-
 
 
 

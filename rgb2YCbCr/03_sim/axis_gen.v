@@ -79,13 +79,11 @@ begin
 end
 
 //=============================================================
-// 
+// vivado sim file path
 localparam FILE_BIN_IN = "../../../../../03_sim/test.bin";
 
 integer         fd_in;
 integer         i;
-integer         code;
-reg[23:0]       rgb_data [1919:0];
 reg[15:0]       h_cnt		= 16'd0;
 reg[15:0]       v_cnt		= 16'd0;
 
@@ -100,12 +98,6 @@ begin
     end
     $display("\n ============= file bin in opened... ============= ") ;
 
-//    for (i=0; i <= 1919; i = i + 1)
-//    begin
-//        code = $fread(rgb_data[i], fd_in, 0, 1); 
-//    end
-
-//    $fclose(fd_in);
 end
   
 always @ (posedge clk_in)

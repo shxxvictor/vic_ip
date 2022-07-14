@@ -148,6 +148,10 @@ reg[34:0]       data_temp_dly2;
 reg             data_temp_cnt1_dly1;
 reg             data_temp_cnt1_dly2;
 
+reg             data_out_last_pre1;
+reg             data_out_last_pre2;
+reg             data_out_last_pre3;
+
 //------------------------------
 // clock transformed data count, inorder to locate the data while width convert
 always @ (posedge clk_out)
@@ -213,6 +217,16 @@ begin
                 default:data_out_pre   		<= #TCQ data_out_pre;
             endcase
         end
+    else if ({data_out_last_pre2,data_out_last_pre3} == 2'b10)
+        begin
+            case (data_out_cnt_dly)
+                2'd0:   data_out_pre   		<= #TCQ {16'd0,data_temp_dly2[31:24]};
+                2'd1:   data_out_pre   		<= #TCQ {8'd0,data_temp_dly2[31:16]};
+                2'd2:   data_out_pre   		<= #TCQ data_out_pre;
+                2'd3:   data_out_pre   		<= #TCQ data_out_pre;
+                default:data_out_pre   		<= #TCQ data_out_pre;
+            endcase
+        end
     else
         data_out_pre   		<= #TCQ data_out_pre;
 end
@@ -222,7 +236,6 @@ end
 always @ (posedge clk_out)
 begin
     data_out            <= #TCQ data_out_pre;
-    data_out_en_pre2    <= #TCQ data_out_en_pre1;
     data_out_en         <= #TCQ data_out_en_pre2;
     data_out_cnt_dly    <= #TCQ data_out_cnt;
 end
@@ -239,12 +252,25 @@ begin
         data_out_en_pre1 <= #TCQ 1'b0;
 end 
 
+always @ (posedge clk_out)
+begin
+    if (rst_out)
+        data_out_en_pre2 <= #TCQ 1'b0;
+    else if ({data_out_last_pre2,data_out_last_pre3} == 2'b10)
+        begin
+            case (data_out_cnt_dly)
+                2'd0:   data_out_en_pre2   		<= #TCQ 1'b1;
+                2'd1:   data_out_en_pre2   		<= #TCQ 1'b1;
+                2'd2:   data_out_en_pre2   		<= #TCQ data_out_en_pre1;
+                2'd3:   data_out_en_pre2   		<= #TCQ data_out_en_pre1;
+                default:data_out_en_pre2   		<= #TCQ data_out_en_pre1;
+            endcase
+        end
+    else
+        data_out_en_pre2 <= #TCQ data_out_en_pre1;
+end 
 //------------------------------
 // output data last delay
-reg     data_out_last_pre1;
-reg     data_out_last_pre2;
-reg     data_out_last_pre3;
-
  always @ (posedge clk_out)
  begin
     data_out_last_pre1  <= #TCQ data_temp_last;
@@ -258,12 +284,9 @@ always @ (posedge clk_out)
 begin
     if (rst_out)
         data_out_last <= #TCQ 1'b0;
-    else if (data_out_cnt_dly >= 2'd2)
-        data_out_last <= #TCQ data_out_last_pre3;
     else
-        data_out_last <= #TCQ data_out_last_pre2;
+        data_out_last <= #TCQ data_out_last_pre3;
 end 
-
 
 
 endmodule

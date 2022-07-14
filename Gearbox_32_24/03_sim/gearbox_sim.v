@@ -68,7 +68,7 @@ end
 `define     DATA_TYPE       32'd1
 //----------------------------
 // The input data end position, you can change this value to adjust where the data ends and observe how this gearbox react to the data_in_last signal.
-`define     DATA_END_SIG    32'd2
+`define     DATA_END_SIG    32'd3
 
 gearbox_data_gen #(
 .DATA_TYPE          (`DATA_TYPE     ),
@@ -85,7 +85,7 @@ gearbox_data_gen #(
 
 
 gearbox u_gearbox(
-.reset        ( reset        ),
+.reset        ( reset1       ),
 .clk_in       ( clk_200m     ),
 .clk_out      ( clk_300m     ),
 

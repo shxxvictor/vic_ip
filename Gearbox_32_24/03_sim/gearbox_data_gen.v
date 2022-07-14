@@ -70,6 +70,7 @@ begin
 end
 
 reg[63:0]       main_cnt;
+reg[3:0]        sub_cnt;
 
 always @ (posedge clk_200m)
 begin
@@ -105,10 +106,20 @@ begin
         data_en <= #TCQ 1'b0;
     else if (main_cnt >= (data_end + 1'b1) || !data_en_limit)
         data_en <= #TCQ 1'b0;
-    else if (main_cnt >= 64'd1000)
+    else if (main_cnt >= 64'd1002)
         data_en <= #TCQ 1'b1;
     else
         data_en <= #TCQ data_en;
+end
+
+always @ (posedge clk_200m)
+begin
+    if (reset)
+        sub_cnt <= 4'd0;
+    else if (data_en)
+        sub_cnt <= sub_cnt + 1'b1;
+    else
+        sub_cnt <= sub_cnt;
 end
 
 //----------------------------
@@ -128,9 +139,14 @@ end
 always @ (posedge clk_200m)
 begin 
     if (reset)
-        data_in_rgb <= #TCQ 32'h40_30_20_10;
+        data_in_rgb <= #TCQ 32'hB0_A2_A1_A0;
     else if (data_en)
-        data_in_rgb <= #TCQ data_in_rgb + 32'h01_01_01_01;
+        case (sub_cnt%3)
+            0:  data_in_rgb <= 32'hB0_A2_A1_A0;
+            1:  data_in_rgb <= 32'hC1_C0_B2_B1;
+            2:  data_in_rgb <= 32'hD2_D1_D0_C2;
+            default: data_in_rgb <= #TCQ 32'h00_00_0_00;
+        endcase
     else
         data_in_rgb <= #TCQ data_in_rgb;
 end

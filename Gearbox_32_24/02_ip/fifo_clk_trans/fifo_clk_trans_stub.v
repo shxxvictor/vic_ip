@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.2 (win64) Build 3367213 Tue Oct 19 02:48:09 MDT 2021
-// Date        : Tue Jun 28 15:27:22 2022
+// Date        : Wed Jul 13 16:15:32 2022
 // Host        : DESKTOP-1TSGDPC running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub -rename_top fifo_clk_trans -prefix
 //               fifo_clk_trans_ fifo_clk_trans_stub.v
