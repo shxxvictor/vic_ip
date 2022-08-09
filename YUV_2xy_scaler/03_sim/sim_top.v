@@ -139,7 +139,7 @@ rgb2YCbCr#(
 
 wire[64:0]  tdata_2         ; 
 wire        tlast_2         ;
-wire        tready_2       ;
+wire        tready_2         = 1'b1;
 wire        tuser_2         ;
 wire        tvalid_2        ;
 

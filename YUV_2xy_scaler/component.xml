@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>user.org</spirit:vendor>
-  <spirit:library>user</spirit:library>
+  <spirit:vendor>shxxvictor</spirit:vendor>
+  <spirit:library>vic_ip</spirit:library>
   <spirit:name>YUV_2xy_scaler</spirit:name>
   <spirit:version>1.0</spirit:version>
   <spirit:busInterfaces>
@@ -195,7 +195,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>4fb25720</spirit:value>
+            <spirit:value>39c7c090</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -569,7 +569,31 @@
   <spirit:vendorExtensions>
     <xilinx:coreExtensions>
       <xilinx:supportedFamilies>
+        <xilinx:family xilinx:lifeCycle="Production">artix7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">artix7l</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">artixuplus</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">qartix7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">qkintex7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">qkintex7l</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">kintexu</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">kintexuplus</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">qvirtex7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">virtexuplus</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">virtexuplusHBM</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">qzynq</xilinx:family>
         <xilinx:family xilinx:lifeCycle="Production">zynquplus</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">kintex7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">kintex7l</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">spartan7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">versal</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">virtex7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">virtexu</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">virtexuplus58g</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">aartix7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">akintex7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">aspartan7</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">azynq</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Production">zynq</xilinx:family>
       </xilinx:supportedFamilies>
       <xilinx:taxonomies>
         <xilinx:taxonomy>/UserIP</xilinx:taxonomy>
@@ -579,8 +603,8 @@
       <xilinx:xpmLibraries>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
-      <xilinx:coreRevision>7</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2022-07-05T06:22:22Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>9</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2022-08-09T03:41:31Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@46d92af_ARCHIVE_LOCATION">/media/disk_x/vic_projects/vic_ip/YUV_2xy_scaler</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7e23bcfe_ARCHIVE_LOCATION">/media/disk_x/vic_projects/vic_ip/YUV_2xy_scaler</xilinx:tag>
@@ -657,13 +681,54 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@7cd72546_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@27460cc3_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@5685dd4f_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3665aa1c_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f388140_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@696165ee_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@13bcf4a8_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@36fbe450_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1aa65d8f_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@10a22fd5_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@5be5d73b_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@63dbc53a_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1a49766b_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1bb8c059_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2c42fb74_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7a01597b_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@82afb06_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3b42e0eb_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3eb0b709_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@541d449_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6594251f_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@30ab7ebd_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@27571e16_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7d867e99_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@31c5505a_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@27375982_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@50671857_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@499d378a_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@f747eba_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4151b6c2_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ddbb1b0_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1ac12ac0_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@d09cfd7_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7fec0069_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@257ed00b_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2e2932f5_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4be25ff8_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@55662487_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@28f4a281_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@684d7594_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@70655281_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@74c75c64_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@4a3eda68_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@74bfbe6_ARCHIVE_LOCATION">i:/vic_ip/YUV_2xy_scaler</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="eaa257ca"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="7926cabe"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="55175b09"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="238ab4fc"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="ee764750"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="4bf65053"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="8624c779"/>
     </xilinx:packagingInfo>

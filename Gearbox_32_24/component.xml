@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>xilinx.com</spirit:vendor>
-  <spirit:library>user</spirit:library>
-  <spirit:name>gearbox</spirit:name>
+  <spirit:vendor>shxxvictor</spirit:vendor>
+  <spirit:library>vic_ip</spirit:library>
+  <spirit:name>gearbox_32_24</spirit:name>
   <spirit:version>1.0</spirit:version>
   <spirit:busInterfaces>
     <spirit:busInterface>
@@ -29,7 +29,7 @@
         <spirit:displayName>Synthesis</spirit:displayName>
         <spirit:envIdentifier>:vivado.xilinx.com:synthesis</spirit:envIdentifier>
         <spirit:language>Verilog</spirit:language>
-        <spirit:modelName>gearbox</spirit:modelName>
+        <spirit:modelName>gearbox_32_24</spirit:modelName>
         <spirit:fileSetRef>
           <spirit:localName>xilinx_anylanguagesynthesis_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:localName>
         </spirit:fileSetRef>
@@ -39,7 +39,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>0de728f8</spirit:value>
+            <spirit:value>20c6a33a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -48,7 +48,7 @@
         <spirit:displayName>Simulation</spirit:displayName>
         <spirit:envIdentifier>:vivado.xilinx.com:simulation</spirit:envIdentifier>
         <spirit:language>Verilog</spirit:language>
-        <spirit:modelName>gearbox</spirit:modelName>
+        <spirit:modelName>gearbox_32_24</spirit:modelName>
         <spirit:fileSetRef>
           <spirit:localName>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_fifo_generator_13_2__ref_view_fileset</spirit:localName>
         </spirit:fileSetRef>
@@ -58,7 +58,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a4a36d79</spirit:value>
+            <spirit:value>3336d022</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -231,11 +231,12 @@
       <spirit:file>
         <spirit:name>02_ip/fifo_clk_trans/fifo_clk_trans.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_u_fifo_clk_trans/fifo_clk_trans</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>01_rtl/gearbox.v</spirit:name>
+        <spirit:name>01_rtl/gearbox_32_24.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_70946e0d</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_887da5d1</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -253,9 +254,10 @@
       <spirit:file>
         <spirit:name>02_ip/fifo_clk_trans/fifo_clk_trans.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_u_fifo_clk_trans/fifo_clk_trans</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>01_rtl/gearbox.v</spirit:name>
+        <spirit:name>01_rtl/gearbox_32_24.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
     </spirit:fileSet>
@@ -289,74 +291,54 @@
     <spirit:fileSet>
       <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>xgui/gearbox_v1_0.tcl</spirit:name>
+        <spirit:name>xgui/gearbox_32_24_v1_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
         <spirit:userFileType>CHECKSUM_f64a5dae</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
   </spirit:fileSets>
-  <spirit:description>gearbox_v1_0</spirit:description>
+  <spirit:description>gearbox_32_24_v1_0</spirit:description>
   <spirit:parameters>
     <spirit:parameter>
       <spirit:name>Component_Name</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">gearbox_v1_0</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">gearbox_32_24_v1_0</spirit:value>
     </spirit:parameter>
   </spirit:parameters>
   <spirit:vendorExtensions>
     <xilinx:coreExtensions>
       <xilinx:supportedFamilies>
-        <xilinx:family xilinx:lifeCycle="Production">virtex7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">qvirtex7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">versal</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">kintex7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">kintex7l</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">qkintex7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">qkintex7l</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">akintex7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">artix7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">artix7l</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">aartix7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">qartix7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">zynq</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">qzynq</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">azynq</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">spartan7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">aspartan7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">virtexu</xilinx:family>
         <xilinx:family xilinx:lifeCycle="Production">zynquplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">virtexuplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">virtexuplusHBM</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">virtexuplus58g</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">kintexuplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">artixuplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">kintexu</xilinx:family>
       </xilinx:supportedFamilies>
       <xilinx:taxonomies>
         <xilinx:taxonomy>/UserIP</xilinx:taxonomy>
       </xilinx:taxonomies>
-      <xilinx:displayName>gearbox_v1_0</xilinx:displayName>
+      <xilinx:displayName>gearbox_32_24_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
       <xilinx:xpmLibraries>
         <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
       <xilinx:coreRevision>2</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2022-07-13T07:52:30Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2022-08-09T03:29:39Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@4bcda6d8_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@d884b77_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@44a9a6e1_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@5a8ad022_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
-        <xilinx:tag xilinx:name="ui.data.coregen.df@a4bc6a1_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6493a283_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@218feefc_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@20de3035_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@204267ac_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7fbc61e3_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@29a66e71_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@2a2a8273_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@46c1ba8b_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6824f5cd_ARCHIVE_LOCATION">i:/vic_ip/gearbox_32_24_v1</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dc98b60a"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="5ec124b3"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="ae32027d"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="5a60bace"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="a00b412d"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="1e64533a"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

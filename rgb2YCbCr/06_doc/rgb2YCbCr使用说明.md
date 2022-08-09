@@ -20,12 +20,6 @@ Cb = -0.101 * R - 0.338 * G + 0.439 * B + 128;
 
 Cr = 0.439 * R - 0.399 * G - 0.040 * B + 128;
 
-## 输入输出时序图
-
-本模块相对简单，输入输出都是axis接口，输入rdata[23:0]具体为{R[7:0],G[7:0],B[7:0]}，输出数据tdata[23:0]则使用官方定义的axis中相应的YUV顺序{V[7:0],U[7:0],Y[7:0]}。输入和输出之间有4个clock的延迟。
-
-![line_change](rgb2YCbCr使用说明.assets/line_change.png)
-
 ## IP 配置
 
 模块的配置很简单，Data Width代表RGB中每种颜色的位宽，Pix Per Clock代表每个时钟传输几个像素。
@@ -35,3 +29,10 @@ Cr = 0.439 * R - 0.399 * G - 0.040 * B + 128;
 IP只提供了常用的配置，如果有非常规的需求，可以更改源码实现。
 
 ![config1](rgb2YCbCr使用说明.assets/config1.PNG)
+
+## 输入输出时序图
+
+本模块相对简单，输入输出都是axis接口，输入rdata[23:0]具体为{R[7:0],G[7:0],B[7:0]}，输出数据tdata[23:0]则使用官方定义的axis中相应的YUV顺序{V[7:0],U[7:0],Y[7:0]}。输入和输出之间有4个clock的延迟。
+
+![line_change](rgb2YCbCr使用说明.assets/line_change.png)
+

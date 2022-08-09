@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>xilinx.com</spirit:vendor>
-  <spirit:library>user</spirit:library>
+  <spirit:vendor>shxxvictor</spirit:vendor>
+  <spirit:library>vic_ip</spirit:library>
   <spirit:name>gearbox_24_32</spirit:name>
   <spirit:version>1.0</spirit:version>
   <spirit:busInterfaces>
@@ -20,6 +20,28 @@
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>clk</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="clock_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>CLK</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>clk</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
+      <spirit:parameters>
+        <spirit:parameter>
+          <spirit:name>ASSOCIATED_RESET</spirit:name>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.CLK.ASSOCIATED_RESET">reset</spirit:value>
+        </spirit:parameter>
+      </spirit:parameters>
     </spirit:busInterface>
   </spirit:busInterfaces>
   <spirit:model>
@@ -67,7 +89,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>36904c8c</spirit:value>
+            <spirit:value>4aab188d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -238,6 +260,11 @@
         <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
         <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
       </spirit:file>
+      <spirit:file>
+        <spirit:name>00_prj/gearbox_sim_behav.wcfg</spirit:name>
+        <spirit:fileType>unknown</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+      </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_xpgui_view_fileset</spirit:name>
@@ -290,8 +317,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>gearbox_24_32_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>2</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2022-07-13T07:26:40Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>3</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2022-08-09T03:20:07Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.df@7800a585_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@210d3cf9_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
@@ -300,12 +327,27 @@
         <xilinx:tag xilinx:name="ui.data.coregen.df@56190c6d_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@1ae46b14_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.df@72178b4b_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@de44c61_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@53074c6_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@435eac6_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3f2d57ea_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@736dd8e7_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@12fca43b_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@52550534_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@679d2dad_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@cb07389_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@10f97764_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@3de82af3_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@1c25bf87_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@6832ab36_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@7ff398af_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.df@22586ffa_ARCHIVE_LOCATION">i:/vic_ip/gearbox_24_32_v1</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="dc98b60a"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="bd4b682d"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="50102c5c"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="aaabdc1b"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="94bdc76c"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="a441c945"/>
     </xilinx:packagingInfo>
